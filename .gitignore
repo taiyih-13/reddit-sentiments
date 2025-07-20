@@ -1,0 +1,10 @@
+# Python
+__pycache__/
+*.py[cod]
+.env
+# Node
+node_modules/
+# Docker volumes
+db_data/
+# IDE
+.vscode/
