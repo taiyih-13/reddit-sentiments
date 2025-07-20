@@ -1,7 +1,6 @@
-# reddit-sentiments
-# Sentiment‑Miner
+# Reddit-Sentiments
 
-Turn Reddit chatter into a live “mood ring” for the stock market.
+Turn Reddit chatter into a live tracker for the stock market.
 
 ## What it does 
 
