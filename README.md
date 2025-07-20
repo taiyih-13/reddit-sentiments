@@ -3,7 +3,7 @@
 
 Turn Reddit chatter into a live “mood ring” for the stock market.
 
-## What it does (in plain English)
+## What it does 
 
 1. **Listens to Reddit**  
    Every 5 minutes it checks the biggest finance communities (WallStreetBets, r/stocks, etc.).  
