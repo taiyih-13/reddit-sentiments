@@ -5,7 +5,7 @@ import os, re, json, asyncio, asyncpraw, redis
 from dotenv import load_dotenv
 load_dotenv()
 
-TICKER_RE = re.compile(r'(\\$?[A-Z]{2,5})(?=\\b)')
+TICKER_RE = re.compile(r'(\$?[A-Z]{2,5})(?=\b)')
 WHITELIST = set()
 
 async def load_sp500():
@@ -17,8 +17,16 @@ async def load_sp500():
     return {row["Symbol"] for row in reader}
 
 async def main():
+    print("[DEBUG] Starting collector...")
+    print(f"[DEBUG] RID: {os.getenv('RID')}")
+    print(f"[DEBUG] RSEC: {os.getenv('RSEC')}")
+    print(f"[DEBUG] RUSERAGENT: {os.getenv('RUSERAGENT')}")
+    
     global WHITELIST
+    print("[DEBUG] Loading S&P 500 list...")
     WHITELIST = await load_sp500()
+    print(f"[DEBUG] Loaded {len(WHITELIST)} S&P 500 stocks")
+    
     reddit = asyncpraw.Reddit(
         client_id=os.getenv("RID"),
         client_secret=os.getenv("RSEC"),
