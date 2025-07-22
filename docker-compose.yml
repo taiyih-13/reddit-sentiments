@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   postgres:
-    image: timescale/timescaledb:2.15.1-pg15
+    image: timescale/timescaledb:2.15.1-pg15      # pinned tag
     environment:
       - POSTGRES_PASSWORD=${PG_PASSWORD}
       - POSTGRES_DB=${PG_DB}
@@ -17,18 +17,30 @@ services:
     depends_on: [redis]
   worker:
     build: ./app
-    command: celery -A tasks worker --concurrency 2 --prefetch-multiplier 1
+    command: >
+      celery -A tasks worker
+             --concurrency 2
+             --prefetch-multiplier 1
+             --loglevel=info
+    working_dir: /app
+    env_file: .env
+    depends_on: [redis, postgres]
+  beat:
+    build: ./app
+    command: celery -A tasks beat --loglevel=info
+    working_dir: /app
     env_file: .env
     depends_on: [redis, postgres]
   api:
     build: ./app
     command: uvicorn api:app --host 0.0.0.0 --port 8000 --reload
     env_file: .env
-    ports: [ "8000:8000" ]
+    ports: ["8000:8000"]
     depends_on: [postgres]
   frontend:
     build: ./frontend
-    command: npm run dev
-    ports: [ "5174:5173" ]
+    command: npm run dev -- --host 0.0.0.0 --port 5173
+    ports: ["8080:5173"]
+    depends_on: []
 volumes:
   db_data:
